@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
+//<App /> 이것을 컴포넌트라고 부른다. = HTML반환하는 함수.
+//JSX : js안의 HTML 이다. 컴포넌트를 만들고 붙이고 
+
+//한번에 하나의 컴포넌트만 랜더를 해야한다. -> 그래서 App.js 에서 완성되서 나와야 한다.
 ReactDOM.render(<App />, document.getElementById('root'));
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

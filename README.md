@@ -37,6 +37,23 @@ npx create-react-app moive_app_2019
 npm start
 ```
 
+1. public의 index.html에 여러 컴포넌트들을 리액트가 집어 넣어준다. 가상돔 덕분에 속도도 빨라지고
+HTML구성하는데 있어 엄청난 효과.  
+
+- React의 매직
+1. 컴포넌트간의 인자전달. HTML코드를 완전히 반복,확장 가능
+2. ES6 최신 js
+```
+function Love(props){
+  console.log(props.fav);
+  return <h1>I loving you</h1>;
+}
+
+function Love({fav}){
+  console.log(fav);
+  return <h1>I loving you</h1>;
+}
+```
 # Movie App 2019
 
 React Js Fundamentals Course (2019 Update!)
