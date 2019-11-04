@@ -1,3 +1,5 @@
+[ReactJS 1](https://dosimpact.github.io/movie_app_2019/)
+
 # ReactJS 1
 
 [React.JS 인트로 강좌 링크](https://academy.nomadcoders.co/courses/216871/lectures/10881272)
@@ -169,3 +171,18 @@ friends.map(function(current){
     "deploy": "gh-pages -d build",
     "predeploy":"npm run build"
 ```
+
+6. 추가로 깃허브 페이지에서 gh-paged로 브런치 설정~!
+
+# Outro
+
+- 아직 끝나지 않았다. 아직도 많이 배워야되고 많이 연습해야되
+
+1. 멋진 API를 찾고 3가지 이상 만들어 봐라.
+2. Youtube동영상 API를 이용해서 멋진것을 만들어 봐라.
+
+- react hook덕분에 state를 갖기위해 class를 쓸필요가 없다.
+  react hook은 새로운것이다. class component가 구식이 아니고 다른방법.
+
+https://academy.nomadcoders.co/p/es6-once-and-for-all
+https://academy.nomadcoders.co/p/introduction-to-react-hooks
