@@ -1,112 +1,46 @@
 import React from "react";
-import Potato from "./Potato";
 import PropTypes from "prop-types";
 
-//JSX는 HTML과 매우 유사한 문법. JSX = HTML + js
-function Love({ fav }) {
-  console.log(fav);
-  return <h1>I loving you and {fav}</h1>;
-}
+/*
+class 컴포넌트를 이용해서 HTML그리자
+왜냐면 state때문에 함수컴포넌트 대신 이를 쓴다.
+자동적으로 render 메소드를 실행시킨다.
+원래는 addevent리스너를 이용해서 버튼이 눌리면 특정 sj 함수를 호출해야 되는데.
+여기서는 onClick에 함수만 연결하면 끝 by JSX(react magic)
 
-function Food({ name, picture, rating }) {
-  return (
-    <div>
-      <h2> i Like {name}</h2>
-      <h4>{rating}/5.0</h4>
-      <img src={picture} alt={name}></img>
-    </div>
-  );
-}
+직접 state의 변수를 바꾸려고하면 do not mutate stat directly, use setState() 라는 경고 메시지가 나온다.
+직접 변수를 바꾸면, render함수를 재호출하지 않기 떄문이다.
+setState함수를 호출하면, 우리는 HTML다시 refresh 하고 싶다는 의도를 파악해서 마술을 부린다.
+virtualDOM 을 갖고 있어서 페이지가 리로드 되지도 않는다.
 
-Food.propTypes = {
-  name: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
-  rating: PropTypes.number.isRequired
-};
+    this.setState({ count: this.state.count + 1 }); state에 완전 의존하는 방식은 성능에 문제가 있어서
+    다른 방법으로 해야 한다.
 
-const foodILike = [
-  {
-    id: 1,
-    name: "Kimchi",
-    image:
-      "http://aeriskitchen.com/wp-content/uploads/2008/09/kimchi_bokkeumbap_02-.jpg",
-    rating: "5"
-  },
-  {
-    id: 2,
-    name: "Samgyeopsal",
-    image:
-      "https://3.bp.blogspot.com/-hKwIBxIVcQw/WfsewX3fhJI/AAAAAAAAALk/yHxnxFXcfx4ZKSfHS_RQNKjw3bAC03AnACLcBGAs/s400/DSC07624.jpg",
-    rating: 3.4
-  },
-  {
-    id: 3,
-    name: "Bibimbap",
-    image:
-      "http://cdn-image.myrecipes.com/sites/default/files/styles/4_3_horizontal_-_1200x900/public/image/recipes/ck/12/03/bibimbop-ck-x.jpg?itok=RoXlp6Xb",
-    rating: 4
-  },
-  {
-    id: 4,
-    name: "Doncasu",
-    image:
-      "https://s3-media3.fl.yelpcdn.com/bphoto/7F9eTTQ_yxaWIRytAu5feA/ls.jpg",
-    rating: 2
-  },
-  {
-    id: 5,
-    name: "Kimbap",
-    image:
-      "http://cdn2.koreanbapsang.com/wp-content/uploads/2012/05/DSC_1238r-e1454170512295.jpg",
-    rating: 2.4
+    this.setState(current => ({ count: current.count + 1 }));
+    이 방식은 어째든 react가 현재의 state를 반환해주고 그것을 이용해준다.
+
+setState를 호출할때마가 react는 새로운 state화 함께 render function을 호출할 것이다.
+*/
+class App extends React.Component {
+  state = {
+    count: 0
+  };
+  add = () => {
+    console.log("add");
+    this.setState(current => ({ count: current.count + 1 }));
+  };
+  minus = () => {
+    console.log("minus");
+    this.setState(current => ({ count: current.count - 1 }));
+  };
+  render() {
+    return (
+      <div>
+        <h1>The number is: {this.state.count}</h1>
+        <button onClick={this.add}>Add</button>
+        <button onClick={this.minus}>Minus</button>
+      </div>
+    );
   }
-];
-function renderFood(dish) {
-  return (
-    <Food
-      key={dish.id}
-      name={dish.name}
-      picture={dish.image}
-      rating={dish.rating}
-    ></Food>
-  );
 }
-//컴포넌트끼리 인자를 전달할수있다. ~!!
-function App() {
-  return (
-    <div className="App">
-      <hr />
-      <h2>외부의 js를 통해서 컴포넌트를 가져옴</h2>
-      <Potato />
-      <hr />
-      <h2>Love라는 컴포넌트를 이용함.</h2>
-      컴포넌트에 인자를 전달해 줄 수있고 최신 ES6문법으로 객체를 받을 수 있다.
-      <Love fav="kimchi" />
-      <Love fav="cookie" />
-      <Love fav="samgiopsal" />
-      <Love fav="chukumi" />
-      <hr></hr>
-      <h2> 배열에 담긴 정보를 HTML만들기</h2>
-      <p>
-        배열을 map이라는 함수를 통해서 순환한다. 이때 각 원소를 꺼내어
-        컴포넌트의 인자로 사용한다.
-        <br />
-        이때 컴포넌트 인자에 id를 주어서 고유성을 갖도록 한다. 새로운 배열을
-        만드는 것은 고유성이 파괴되는 것으로 react에서 오류!
-      </p>
-      {foodILike.map(dish => (
-        <Food
-          key={dish.id}
-          name={dish.name}
-          picture={dish.image}
-          rating={dish.rating}
-        />
-      ))}
-      <hr></hr>
-      다른구조
-      <div>{foodILike.map(renderFood)}</div>
-    </div>
-  );
-}
-
 export default App;

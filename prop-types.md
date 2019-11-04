@@ -1,5 +1,7 @@
-- npm i prop-types 컴포넌트 인자들이 잘 전달되는지 확인하는
+- npm i prop-types 컴포넌트 인자들이 잘 전달되는지 확인하는 패키지  
   [ prop-types 문서 ](https://reactjs.org/docs/typechecking-with-proptypes.html)
+
+설치하기
 
 ```
 PS C:\Users\Dos\Desktop\Projects\NodeJS1\movie_app_2019> npm i prop-types
@@ -7,6 +9,8 @@ PS C:\Users\Dos\Desktop\Projects\NodeJS1\movie_app_2019> npm i prop-types
 npm install
 그러면? 자동으로 필요했던 추가적인 것들이 다운받아 지나봐?!
 ```
+
+example basic
 
 ```
 //임포트

@@ -1,6 +1,6 @@
 # ReactJS 1
 
-[React.JS 인트로](https://academy.nomadcoders.co/courses/216871/lectures/10881272)
+[React.JS 인트로 강좌 링크](https://academy.nomadcoders.co/courses/216871/lectures/10881272)
 
 - 환경 설치
 
@@ -11,6 +11,8 @@
    npm install npx -g
 3. npm 업데이트 하기  
    npm install -g npm
+
+#### formatOnSave vs code 플러그인 on
 
 ```cmd
 PS C:\Users\Dos\Desktop\Projects\NodeJS1> npm -v
@@ -24,11 +26,11 @@ git version 2.23.0.windows.1
 PS C:\Users\Dos\Desktop\Projects\NodeJS1>
 ```
 
-- why react.js
+- why react.js  
   많은 회사가 react.js를 사용한다. 페이스북이 만들고 있고, 많은 돈과 사람이 투자된다. 빵빵혀~
   리액트는 자바스크립트이므로 리액트가 없어진다 하더라고 수준높은 js개발자가 되 있을것이다.
 
-- Webpack, Babel
+- Webpack, Babel  
   react을 이용해서 아름답고 섹시한 웹를 만들수 있으나, 몇몇 멍청한 브라우저떄문에 이를 어리석은 코드로 바꿔주어야 한다.  
   하지만 이 단계를 생략한다.  
   npx덕분인가??!
@@ -49,15 +51,60 @@ npm start
 2. ES6 최신 js 문법으로 간편하게 이용 가능.!
 
 ```
+<Love fav="doyoung" />
+
 function Love(props){
   console.log(props.fav);
   return <h1>I loving you</h1>;
 }
 
+
+<Love fav="doyoung" />
+
 function Love({fav}){
   console.log(fav);
   return <h1>I loving you</h1>;
 }
+```
+
+example01
+
+```
+//JSX는 HTML과 매우 유사한 문법. JSX = HTML + js
+function Love({ fav }) {
+  console.log(fav);
+  return <h1>I loving you and {fav}</h1>;
+}
+
+내부의 컴포넌트 사용.
+      <h2>Love라는 컴포넌트를 이용함.</h2>
+      컴포넌트에 인자를 전달해 줄 수있고 최신 ES6문법으로 객체를 받을 수 있다.
+      <Love fav="kimchi" />
+      <Love fav="cookie" />
+      <Love fav="samgiopsal" />
+      <Love fav="chukumi" />
+      <hr></hr>
+인자 전달은 HTML처럼 fav = "전달할것" 으로 쓰면 된다.
+```
+
+example02
+
+```
+import React from "react";
+
+function Potato() {
+  return <h3>I love potato</h3>;
+}
+
+export default Potato;
+```
+
+```
+import Potato from "./Potato";
+
+<h2>외부의 js를 통해서 컴포넌트를 가져옴</h2>
+<Potato />
+
 ```
 
 - js 친구이름 배열에서 각 이름에 하트를 붙이고 싶다면
@@ -77,11 +124,24 @@ friends.map(function(current){
 ```
 
 - react에서는 요소들의 유니크함을 요구한다.  
-  내가 배열을 map으로 다뤄서 다시 새로운 배열을 만드는것은 그들의 유니크함을 없앤것임.
+  내가 배열을 map으로 다뤄서 다시 새로운 배열을 만드는것은 그들의 유니크함을 없앤것임.  
   그래서 JSX에 id 요소를 추가해서 컴포넌트를 호출한다. 그냥 id만 주면됨. HTML상에서 안쓰더라도.
+
+  <p>
+  배열을 map이라는 함수를 통해서 순환한다. 이때 각 원소를 꺼내어
+  컴포넌트의 인자로 사용한다.
+  <br />
+  이때 컴포넌트 인자에 id를 주어서 고유성을 갖도록 한다. 새로운 배열을
+  만드는 것은 고유성이 파괴되는 것으로 react에서 오류!
+  </p>
 
 - prop-types
   [prop-types example](./prop-types.md)
+
+- function 컴포넌트 + 정적 데이터  
+  [ function 컴포넌트 + 정적 데이터](./staticData.md)
+
+- class 컴폰너트 + 동적 데이터
 
 # Movie App 2019
 
