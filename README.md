@@ -186,3 +186,4 @@ friends.map(function(current){
 
 https://academy.nomadcoders.co/p/es6-once-and-for-all
 https://academy.nomadcoders.co/p/introduction-to-react-hooks
+https://academy.nomadcoders.co/p/react-for-beginners
