@@ -10,7 +10,7 @@ import "./App.css";
 
   최신 ES6 문법으로 다음과 같이 쓴다.
     const { isLoading } = this.state;
-    return <div>{isLoading ? "Loading.." : "We are ready"}</div>;
+    return <div>{isLoading ? " Loading.." : "We are ready"}</div>;
 
   - 이거는 js문법이다. setTimeout(callback함수,ms초 뒤에));
     setTimeout(() => { this.setState({ isLoading: false }); } ,  6000);
