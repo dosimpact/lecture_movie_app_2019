@@ -399,53 +399,304 @@ export default App;
 
 # 3.3 Planning the Movie Component
 
-- prop-types
-  [prop-types example](./prop-types.md)
-
-- function 컴포넌트 + 정적 데이터  
-  [ function 컴포넌트 + 정적 데이터](./staticData.md)
-
-- class 컴폰너트 + 동적 데이터
-  [ class 컴폰너트 + 동적 데이터 ](./dynamicData.md)
-
-- 깃헙 - 페이지에 올리기
-
-1. npm i gh-pages
-2. package.json에 다음 추가.
+- loading 만들기, 6초후에 로딩 완료!
+- setTimeout은 js 문법이다. 6초후에 해당 함수 호출!
 
 ```
-  "homepage": "https://dosimpact.github.io/movie_app_2019/"
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: []
+  };
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: false });
+    }, 6000);
+  }
+  render() {
+    const { isLoading } = this.state;
+    return <div>{isLoading ? "Loading..." : "We are ready"}</div>;
+  }
+}
+
 ```
 
-3. npm run build  
-   우리는 build된 폴더를 갖게 된다. 이 폴더를 깃허브에 올린다.
-4. package.json에 다음 스크립트를 추가한다.
+# 4 Making the Movie App
+
+# 4.0 Fetching Movies from API
+
+- fetch대신에 axios를 사용할 것이다.! | npm install axios
+- 비동기함수 설정하기 -> async(함수앞에서 이건 비동기함수야) + await(이 부분을 기달려야되.)
+- yts라는 불법 영화 토렌트 사이트 이용할것임. API서비스를 제공하지만, 매번 주소가 바뀌기에 니코가 프록시를 만들어 버림.
+  [https://github.com/serranoarevalo/yts-proxy](https://github.com/serranoarevalo/yts-proxy)
 
 ```
-    "deploy": "gh-pages -d build"
+import React from "react";
+import axios from "axios";
+
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: []
+  };
+  getMovies = async () => {
+    const movies = await axios.get("https://yts-proxy.now.sh/list_movies.json");
+  };
+  componentDidMount() {
+    this.getMovies();
+  }
+  render() {
+    const { isLoading } = this.state;
 ```
 
-5. 또 추가
-   npm은 똑똑해서 deploy전에 predeploy를 실행
-   그러면 빌드를하고 폴더를 만들고 다시 패이지에 업로드~
+# 4.1 Rendering the Movies
+
+- ES6문법으로 json객체 참조하는 방법 data:{data:{movies}}
+- GET API 영화리스트 받아오기 ?sort_by=rating
+
+```js
+import React from "react";
+import axios from "axios";
+import Movie from "./Movie";
+
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: []
+  };
+  getMovies = async () => {
+    //const movies = await axios.get("https://yts-proxy.now.sh/list_movies.json");
+    //movies.data.data.movies에 리스트있는데 ES6문법으로 다음과 같이 씀
+    const {
+      data: {
+        data: { movies }
+      }
+    } = await axios.get(
+      "https://yts-proxy.now.sh/list_movies.json?sort_by=rating"
+    );
+    this.setState({ movies, isLoading: false });
+  };
+  componentDidMount() {
+    this.getMovies();
+  }
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <div>
+        {isLoading
+          ? "Loading..."
+          : movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+              />
+            ))}
+      </div>
+    );
+  }
+}
+```
+
+- Movie.js 컴포넌트 작성
+
+```js
+import React from "react";
+import PropTypes from "prop-types";
+
+function Movie({ id, year, title, summary, poster }) {
+  return <h4>{title}</h4>;
+}
+
+Movie.propTypes = {
+  id: PropTypes.number.isRequired,
+  year: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  summary: PropTypes.string.isRequired,
+  poster: PropTypes.string.isRequired
+};
+
+export default Movie;
+```
+
+# 4.2 Styling the Movies
+
+- Movie 컴포넌트 HTML 작성 | CSS 임포트 가능 JS에서!!! html이 아니라?!!
+
+```js
+import React from "react";
+import PropTypes from "prop-types";
+import "./Movie.css";
+
+function Movie({ year, title, summary, poster }) {
+  return (
+    <div class="movie">
+      <img src={poster} alt={title} title={title} />
+      <div class="movie__data">
+        <h3 class="movie__title">{title}</h3>
+        <h5 class="movie__year">{year}</h5>
+        <p class="movie__summary">{summary}</p>
+      </div>
+    </div>
+  );
+}
+```
+
+- App도 마찬가지고 HTML 꾸며주기 | CSS 임포트 in JS!!
+
+```js
+import React from "react";
+import axios from "axios";
+import Movie from "./Movie";
+import "./App.css";
+
+class App extends React.Component {
+...
+    return (
+      <section class="container">
+        {isLoading ? (
+          <div class="loader">
+            <span class="loader__text">Loading...</span>
+          </div>
+        ) : (
+          <div class="movies">
+            {movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  }
+}
+```
+
+# 4.3 Adding Genres
+
+- JSX 사용할때, html코드에서의 class랑 for는 js랑 충돌이 일어나기때문에, html이 양보를 해야함. => class|className, for|htmlFor
+- 장르 추가 | 사실 map 함수는 indexnumber를 같이 반환한다. 이를 가지고 컴포넌트의 key로 이용하자.
+
+```js
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <section className="container">
+        {isLoading ? (
+          <div className="loader">
+            <span className="loader__text">Loading...</span>
+          </div>
+        ) : (
+          <div className="movies">
+            {movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+                genres={movie.genres}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  }
+```
+
+```js
+import PropTypes from "prop-types";
+import "./Movie.css";
+
+function Movie({ year, title, summary, poster, genres }) {
+  return (
+    <div className="movie">
+      <img src={poster} alt={title} title={title} />
+      <div className="movie__data">
+        <h3 className="movie__title">{title}</h3>
+        <h5 className="movie__year">{year}</h5>
+        <ul className="genres">
+          {genres.map((genre, index) => (
+            <li key={index} className="genres__genre">
+              {genre}
+            </li>
+          ))}
+        </ul>
+        <p className="movie__summary">{summary}</p>
+      </div>
+    </div>
+  );
+}
+Movie.propTypes = {
+  id: PropTypes.number.isRequired,
+  year: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  summary: PropTypes.string.isRequired,
+  poster: PropTypes.string.isRequired,
+  genres: PropTypes.arrayOf(PropTypes.string).isRequired
+};
+
+export default Movie;
+```
+
+# 4.4 Styles Timelapse
+
+# 4.5 Cutting the summary
 
 ```
+const str = "ABCDEF;
+str.slice(0,3); // ABC
+```
+
+# 5.0 Deploying to Github Pages
+
+- npm i gh-pages | gh-pages를 통해 빠르고 쉽게 깃허브에 베포하기
+- public폴더 부분의 index.html 바꾸기 | title이랑 아이콘 등등
+
+- 1.패키지.json폴더의 homapage부분 추가하기. https://{아이디이름}.github.io/{레포이름}/
+- 2.npm run deploy -> predeploy를 자동 실행(pre접두 ~) ->| build를먼저하고 ->| gh-pages -d build (디렉터리 빌드) 가 실행된다.!!
+
+```
+{
+...
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "deploy": "gh-pages -d build",
-    "predeploy":"npm run build"
+    "predeploy": "npm run build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+...
+  "homepage": "https://dosimpact.github.io/movie_app_2019/"
+}
+
 ```
 
-6. 추가로 깃허브 페이지에서 gh-paged로 브런치 설정~!
+# 6.0 Getting Ready for the Router
 
-# Outro
+- npm install react-router-dom
 
-- 아직 끝나지 않았다. 아직도 많이 배워야되고 많이 연습해야되
+# 6.1 Building the Router
 
-1. 멋진 API를 찾고 3가지 이상 만들어 봐라.
-2. Youtube동영상 API를 이용해서 멋진것을 만들어 봐라.
+# 6.2 Building the Navigation
 
-- react hook덕분에 state를 갖기위해 class를 쓸필요가 없다.
-  react hook은 새로운것이다. class component가 구식이 아니고 다른방법.
+# 6.3 Sharing Props Between Routes
 
-https://academy.nomadcoders.co/p/es6-once-and-for-all
-https://academy.nomadcoders.co/p/introduction-to-react-hooks
-https://academy.nomadcoders.co/p/react-for-beginners
+# 6.4 Redirecting
+
+# 6.5 Conclusions
