@@ -46,3 +46,35 @@ npm start
 [./Docs/lecture01_03.md](./Docs/lecture01_03.md)  
 [./Docs/lecture04_05.md](./Docs/lecture04_05.md)  
 [./Docs/lecture06.md](./Docs/lecture06.md)
+
+# 빠른 Recap
+
+- JSX문법으로 js안에 HTMl,CSS, 컴포넌트까지 전부 쓸수있다.
+- 컴포넌트는 함수, 클래스 두종류의 컴포넌트이다.
+- 컴포넌트에게 props라는 변수를 넘겨 HTML 랜더에 사용한다.
+- 컴포넌트는 재사용이 용이하다. -> 리스트데이터.map을 통해 -> 컴포넌트를 계속 뿌릴 수 있다.
+- 컴포넌트 클래스에 state변수를 선언할수있고 | js함수를 선언할수있다.
+- 컴포넌트의 생성과정은 정해져 있다.
+- async 과 await를 통해 api를 호출한다. Axios를 이용할것!
+- CSS는 컴포넌트에서 임포트 해줘서 사용가능.
+
+```js
+//react-router-dom을 설치한다
+
+// HashRouter컴포넌트안에 Route 를 추가해서 경로를 지정한다.
+
+// <Route path ="/" exact={true} component ={Home}/ >
+// <Route path ="/movie/:id" component = {Detail} />
+
+// 네이게이션을 통해 Link를 걸어주자. a href대신 쓰는거야.
+<Link to="/">Home<Link>
+//링크에 state정보까지 넣어서 보내보자.
+<Link to= {{ pathname: `/~/${id}`, state:{year,...}}} >
+
+//  함수 컴포넌트 (props인자받고) | 클래스 컴포넌트의 this.props에는
+//히스토리의 push로 리다이렉팅이 가능하고
+//location에 state라는 정보도 있다. 이를 이용해서 Detail 페이지 꾸미기
+
+//Link를 타고온 컴포넌트는, state를 보고 undefined면 root로 리다렉
+// 또 state 를 보고 null를반환시키기.
+```

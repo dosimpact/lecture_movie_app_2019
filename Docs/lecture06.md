@@ -9,6 +9,10 @@
 
 # 6.1 Building the Router
 
+```
+npm install react-router-dom
+```
+
 - 리액트의 route는 path와 뿌려줄 컴포넌트를 명시하는데, exact 옵션을 주지 않으면, 하위 path경로들도 전부 랜더링이 된다.
 - 예를들어, /about 이면, path="/"와 path="/about" 이 선택이 된다. 이런점을 이용해서 검색바,등을 모든 html에 뿌릴수있다.
 
